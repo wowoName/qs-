@@ -44,7 +44,8 @@ axios.interceptors.response.use(
 
 class HttpRequest {
 	get(httpUrl, paramsData, successFun, errorFun = () => {}) {
-		axios.get(httpUrl, qs.stringify(paramsData))
+		let httpUrls=httpUrl.replace('/agent','https://jingpincang.quansuwangluo.com')
+		axios.get(httpUrls, qs.stringify(paramsData))
 			.then(function(res) {
 				successFun(res)
 			})
@@ -55,8 +56,9 @@ class HttpRequest {
 	};
 	// post请求
 	post(httpUrl, paramsData, successFun, errorFun = () => {}) {
+		let httpUrls=httpUrl.replace('/agent','https://jingpincang.quansuwangluo.com')
 		//打包前去除代理前缀 /anget
-		axios.post(httpUrl, qs.stringify(paramsData), {
+		axios.post(httpUrls, qs.stringify(paramsData), {
 				//终止请求
 				cancelToken: new axios.CancelToken(function executor(c) {
 					axiosToken = c;
