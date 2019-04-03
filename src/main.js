@@ -14,7 +14,7 @@ import VueLazyload from 'vue-lazyload';
 Vue.use(VueLazyload, {
   preLoad: 1.3,
   error: '../static/images/userDefault.png',
-  loading: '../static/images/loading.png',
+  loading: '../static/images/loading.gif',
   attempt: 2
 });
 //下拉刷新 上拉加载

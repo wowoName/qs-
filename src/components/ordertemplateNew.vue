@@ -1,6 +1,9 @@
 <template>
-	<div>
-		<div class="orderItems"  v-for="(item,index) in data" :key="item.order_id">
+	<scroller :on-refresh="onRefresh" :on-infinite="onInfiniteLoad" ref="myScroller">
+		<div slot="refresh-spinner" class="scrollerSolt">
+			<img src="../../static/images/dropLoading.gif" alt="">
+		</div>
+		<div class="orderItems" v-for="(item,index) in listData" :key="item.order_id">
 			<div class="goodsInfos">
 				<div class="goodsImg"><img v-lazy="item.goods[0].goods_image" alt=""></div>
 				<div class="goddsDesc">
@@ -16,30 +19,81 @@
 				<span class="orderState order-hasPay" :style="{color:item.order_state=='41'?'#7B7B7B':'#FE015B'}">{{item.order_state_cn}}</span>
 			</div>
 		</div>
-	</div>
+	</scroller>
 </template>
 
 <script>
+	import {
+		ViewBox
+	} from 'vux';
 	export default {
 		name: 'OrderTemplate',
-		components: {},
+		components: {
+			ViewBox
+		},
 		props: {
-			data: {
-				type: Array,
-				default: () => {
-					return []
-				}
+			txtColor: {
+				type: String,
+				default: "#FE015B"
 			},
-			txtColor:{
-				type:String,
-				default:"#FE015B"
+			suc: { //订单类型
+				type: String,
+				default: ""
 			}
 		},
 		data() {
-			return {}
+			return {
+				listData: [],
+				pageSize: 1,
+				top: 0,
+				noData: false //无更多数据
+			}
 		},
 		watch: {},
-		methods: {},
+		methods: {
+			// 全部订单下拉刷新
+			onRefresh(done) {
+				this.getData(done, true);
+			},
+			// 全部订单上拉加载
+			onInfiniteLoad(done) {
+				if (!this.noData)
+					this.getData(done);
+				else done(true);
+			},
+			getData(done, reset = false) {
+				return new Promise((resolve, reject) => {
+					//如果是下拉刷新页数置为1;上拉加载可用
+					if (reset)
+						this.pageSize = 1, this.noData = false;
+					this.ajax.get("/agent/User/user/myOrder?suc=" + this.suc + "&p=" + this.pageSize, {}, data => {
+						if (reset)
+							this.listData = data.data.datas;
+						else
+							this.listData = this.listData.concat(data.data.datas);
+						//页数递加
+						this.pageSize++;
+						this.$nextTick(() => {
+							if (data.data.datas.length == 0) {
+								this.noData = true;
+								done(true);
+							} else done(false);
+							resolve(data.data.datas.length);
+						});
+					}, data => {
+						resolve(0);
+					});
+				})
+			},
+			getScroller() {
+				this.top = this.$refs.myScroller.getPosition().top;
+			},
+			gotoScroller() {
+				setTimeout(() => {
+					this.$refs.myScroller.scrollTo(0, this.top, true)
+				})
+			}
+		},
 		computed: {},
 		created() {},
 		mounted() {}
@@ -65,6 +119,18 @@
 		@include textOverflows;
 		width: 351px;
 		font-size: $fontsize;
+	}
+
+	.scrollerSolt {
+		height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		img {
+			max-height: 100%;
+			max-width: 100%;
+		}
 	}
 
 	.orderItems {

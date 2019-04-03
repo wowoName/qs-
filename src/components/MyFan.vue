@@ -8,67 +8,70 @@
 			</div>
 		</div>
 		<tab active-color="#111111" default-color="#111111" bar-active-color="#FE1969" line-width="0.125rem" custom-bar-width="2.0625rem">
-			<tab-item :selected="tabIndex===0" @on-item-click="onItemClick" badge-label="88" badge-background="transparent"
+			<tab-item :selected="tabIndex===0" @on-item-click="onItemClick" :badge-label="fansDataTotal" badge-background="transparent"
 			 badge-color="#FE1969">粉丝</tab-item>
-			<tab-item :selected="tabIndex===1" @on-item-click="onItemClick" badge-label="152" badge-background="transparent"
+			<tab-item :selected="tabIndex===1" @on-item-click="onItemClick" :badge-label="superBuyDataTotal" badge-background="transparent"
 			 badge-color="#FE1969">超级买手</tab-item>
-			<tab-item :selected="tabIndex===2" @on-item-click="onItemClick" badge-label="268" badge-background="transparent"
+			<tab-item :selected="tabIndex===2" @on-item-click="onItemClick" :badge-label="operatorDataTotal" badge-background="transparent"
 			 badge-color="#FE1969">运营商</tab-item>
 		</tab>
 		<div class="myfanCon">
 			<swiper :show-dots="false" v-model="tabIndex" :threshold="80">
 				<swiper-item>
-					<view-box ref="viewbox0">
-						<scroller :on-refresh="onRefreshF" :on-infinite="onInfiniteLoadF" ref="my_scroller">
-							<div class="myfanItem" v-for="(item,index) in fansData" :key="item.uid">
-								<div class="fansImg">
-									<img v-lazy="item.fans.user_avatar" alt="">
-								</div>
-								<div class="fansName">
-									<span>{{item.fans.user_name}}</span><span>{{item.fans.binded_time}}</span>
-								</div>
-								<div class="fansAmount">粉丝数<span>{{item.cout}}</span>
-								</div>
-								<div class="upgrade" @click="hasUpGreade(item.uid)">
-									<span>升级</span>
-								</div>
+					<scroller :on-refresh="onRefreshF" :on-infinite="onInfiniteLoadF" ref="fansData">
+						<div slot="refresh-spinner" class="scrollerSolt">
+							<img src="../../static/images/dropLoading.gif" alt="">
+						</div>
+						<div class="myfanItem" v-for="(item,index) in fansData" :key="item.uid">
+							<div class="fansImg">
+								<img v-lazy="item.fans.user_avatar" alt="">
 							</div>
-						</scroller>
-					</view-box>
+							<div class="fansName">
+								<span>{{item.fans.user_name}}</span><span>{{item.fans.binded_time}}</span>
+							</div>
+							<div class="fansAmount">粉丝数<span>{{item.cout}}</span>
+							</div>
+							<div class="upgrade" @click="hasUpGreade(item.uid)">
+								<span>升级</span>
+							</div>
+						</div>
+					</scroller>
 				</swiper-item>
 				<swiper-item>
-					<view-box ref="viewbox1">
-						<scroller :on-refresh="onRefreshB" :on-infinite="onInfiniteLoadB" ref="my_scroller">
-							<div class="myfanItem-superBuys" v-for="(item,index) in superBuyData" :key="index">
-								<div class="fansImg">
-									<img v-lazy="'../../static/images/userImg.jpg'" alt="">
-								</div>
-								<div class="fansName">
-									<span>蜗蜗</span><span>2018-02-02</span>
-								</div>
-								<div class="fansAmount">粉丝数<span>1222225</span>
-								</div>
-								<div class="upgrade"><span>￥{{index*1000000}}</span></div>
+					<scroller :on-refresh="onRefreshB" :on-infinite="onInfiniteLoadB" ref="superBuyData">
+						<div slot="refresh-spinner" class="scrollerSolt">
+							<img src="../../static/images/dropLoading.gif" alt="">
+						</div>
+						<div class="myfanItem-superBuys" v-for="(item,index) in superBuyData" :key="Number(item.uid)*212">
+							<div class="fansImg">
+								<img v-lazy="item.fans.user_avatar" alt="">
 							</div>
-						</scroller>
-					</view-box>
+							<div class="fansName">
+								<span>{{item.fans.user_name}}</span><span>{{item.fans.binded_time}}</span>
+							</div>
+							<div class="fansAmount">粉丝数<span>{{item.cout}}</span>
+							</div>
+							<div class="upgrade"><span>￥{{item.yuejie}}</span></div>
+						</div>
+					</scroller>
 				</swiper-item>
 				<swiper-item>
-					<view-box ref="viewbox2">
-						<scroller :on-refresh="onRefreshS" :on-infinite="onInfiniteLoadS" ref="my_scroller">
-							<div class="myfanItem-superBuys" v-for="(item,index) in operatorData" :key="index">
-								<div class="fansImg">
-									<img v-lazy="'../../static/images/userImg.jpg'" alt="">
-								</div>
-								<div class="fansName">
-									<span>蜗蜗</span><span>2018-02-02</span>
-								</div>
-								<div class="fansAmount">粉丝数<span>1222225</span>
-								</div>
-								<div class="upgrade"><span>￥{{index*1000000}}</span></div>
+					<scroller :on-refresh="onRefreshS" :on-infinite="onInfiniteLoadS" ref="operatorData">
+						<div slot="refresh-spinner" class="scrollerSolt">
+							<img src="../../static/images/dropLoading.gif" alt="">
+						</div>
+						<div class="myfanItem-superBuys" v-for="(item,index) in operatorData" :key="Number(item.uid)*333">
+							<div class="fansImg">
+								<img v-lazy="item.fans.user_avatar" alt="">
 							</div>
-						</scroller>
-					</view-box>
+							<div class="fansName">
+								<span>{{item.fans.user_name}}</span><span>{{item.fans.binded_time}}</span>
+							</div>
+							<div class="fansAmount">粉丝数<span>{{item.cout}}</span>
+							</div>
+							<div class="upgrade"><span>￥{{item.yuejie}}</span></div>
+						</div>
+					</scroller>
 				</swiper-item>
 			</swiper>
 		</div>
@@ -78,27 +81,27 @@
 				<div class="popup-content" v-show="showUpGrade">
 					<div class="title">粉丝升级</div>
 					<div class="toGrade">
-						<div class="gradeItem"><span>萌动</span></div>
+						<div class="gradeItem"><span>粉丝</span></div>
 						<div class="gradeCenter">
 							<img src="../../static/images/upGrade.png" alt="">
 							<img src="../../static/images/upGrade.png" alt="">
 						</div>
-						<div class="gradeItem"><span>超级无敌爱心守护使者</span></div>
+						<div class="gradeItem"><span>超级买手</span></div>
 					</div>
 					<div class="fansInfo">
 						<div class="fansInfo-item">
 							<span calss="superio">他的上级</span>
-							<img src="../../static/images/userImg.jpg" alt="">
-							<span class="userName">蜗蜗</span>
-							<span class="userId">ID:12345685</span>
-							<span class="grade">超级无敌爱心守护使者</span>
+							<img v-lazy="upGreadeInfos.is_binded.user_avatar" alt="">
+							<span class="userName">{{upGreadeInfos.is_binded.user_name}}</span>
+							<span class="userId">ID:{{upGreadeInfos.is_binded.uid}}</span>
+							<span class="grade">{{upGreadeInfos.is_binded.level_cn}}</span>
 						</div>
 						<div class="fansInfo-item">
 							<span calss="superio">当前用户</span>
-							<img src="../../static/images/userImg.jpg" alt="">
-							<span class="userName">蜗蜗</span>
-							<span class="userId">ID:12345685</span>
-							<span class="grade">萌动</span>
+							<img v-lazy="upGreadeInfos.user.user_avatar" alt="">
+							<span class="userName">{{upGreadeInfos.user.user_name}}</span>
+							<span class="userId">ID:{{upGreadeInfos.user.uid}}</span>
+							<span class="grade">粉丝</span>
 						</div>
 					</div>
 					<div class="popupBottom vux-popupBottom">
@@ -136,108 +139,154 @@
 		},
 		data() {
 			return {
+				isLoading: false,
 				showUpGrade: false, //显示粉丝升级
 				tabIndex: 0,
 				fansData: [], //粉丝数据
 				fansPage: 1, //粉丝页数
-				hasGetDataF:false,
+				fansDataFin: false, //无跟多数据
+				fansDataTotal: '0',
 				superBuyData: [], //超级买手数据
 				superBuyPage: 1, //超级买手页数
-				hasGetDataB:false,
+				superBuyDataFin: false, //无跟多数据
+				superBuyDataTotal: '0',
 				operatorData: [], //运营商数据
 				operatorPage: 1, //运营商页数
-				hasGetDataS:false,
-				curUid: "" //当前升级用户的uid
+				operatorDataFin: false, //无跟多数据
+				operatorDataTotal: '0',
+				curUid: "", //当前升级用户的uid
+				upGreadeInfos: { //设计超级买手上级用户信息
+					is_binded: {
+						user_name: "",
+						user_avatar: "",
+						uid: ""
+					},
+					user: {
+						user_name: "",
+						user_avatar: "",
+						uid: ""
+					}
+				},
+				topFans: 0,
+				topSuper: 0,
+				topOpera: 0,
+
 			}
 		},
 		watch: {},
 		methods: {
 			//粉丝下拉刷新
 			onRefreshF(done) {
-				this.fansData = [];
-				this.fansPage = 1;
-				this.processData(1, "fansData", "fansPage",done);
+				this.processData(0, "fansData", "fansPage", done, true);
 			},
 			//粉丝上拉加载
 			onInfiniteLoadF(done) {
-				this.processData(1, "fansData", "fansPage",done);
+				this.processData(0, "fansData", "fansPage", done);
 			},
 			//超级买手下拉刷新
 			onRefreshB(done) {
-				this.superBuyData = [];
-				this.superBuyPage = 1;
-				this.processData(1, "superBuyData", "superBuyPage",done);
+				this.processData(1, "superBuyData", "superBuyPage", done, true);
 			},
 			//超级买上拉加载
 			onInfiniteLoadB(done) {
-				this.processData(1, "superBuyData", "superBuyPage",done);
+				this.processData(1, "superBuyData", "superBuyPage", done);
 			},
 			//运营商下拉刷新
 			onRefreshS(done) {
-				this.operatorData = [];
-				this.operatorPage = 1;
-				this.processData(3, "operatorData", "operatorPage",done);
+				this.processData(2, "operatorData", "operatorPage", done, true);
 			},
 			//运营商上拉加载
 			onInfiniteLoadS(done) {
-				this.processData(3, "operatorData", "operatorPage",done);
+				this.processData(2, "operatorData", "operatorPage", done);
 			},
-			getFansData(type, entriy, pageNum) {
+			getFansData(type, entriy, pageNum, done, reset) {
 				return new Promise((resolve, reject) => {
-					this.ajax.get("/agent/User/User/myFans?state=" + type + "&k=''&p=" + this[pageNum], {}, data => {
-						this[entriy] = this[entriy].concat(data.data.datas);
+					//如果是下拉刷新页数置为1;上拉加载可用
+					if (reset)
+						this[pageNum] = 1, this[entriy + "Fin"] = false;
+					this.ajax.get("/agent/User/User/myFans?state=" + type + "&k=&p=" + this[pageNum], {}, data => {
+						if (reset)
+							this[entriy] = data.data.datas;
+						else
+							this[entriy] = this[entriy].concat(data.data.datas);
+						//保存总数
+						this[entriy + "Total"] = data.data.total.toString();
 						//页数递加
 						this[pageNum]++;
-						resolve(data.data.datas.length)
+						this.$nextTick(() => {
+							if (data.data.datas.length == 0) {
+								this[entriy + "Fin"] = true; //上拉加载不可用
+								done(true);
+							} else {
+								setTimeout(() => {
+									done();
+								}, 1500);
+							}
+							resolve(data.data.datas.length);
+						});
+
 					}, data => {
-						resolve(0)
+						resolve(0);
 					});
 				})
 			},
 			//数据分发处理
-			processData(type, entriy, pageNum, done) {
-				this.getFansData(type, entriy, pageNum).then((data) => {
-					if (data == '0')
-						done(true);
-					else done();
-				});
+			processData(type, entriy, pageNum, done, reset = false) {
+				//如果是下拉加载
+				if (this[entriy + "Fin"] && !reset)
+					done(true);
+				else
+					this.getFansData(type, entriy, pageNum, done, reset).then((data) => {});
 			},
 			//tab进行切换
 			onItemClick(index) {
 				this.tabIndex = Number(index);
-				
 			},
 			hasUpGreade(uid) {
 				//保存当前的uid
 				this.curUid = uid;
-				this.showUpGrade = true;
+				//获取上级信息
+				this.getUpGradeUser();
 			},
+			//升级超级买手获取上级的信息
+			getUpGradeUser() {
+				this.ajax.get("/agent/User/User/upgrade?uid=" + this.curUid, {}, data => {
+					//保存上级用户的信息
+					this.upGreadeInfos = data.data.datas;
+					this.showUpGrade = true;
+				}, data => {});
+			},
+			//进行升级
 			toUpgrade() {
-				this.ajax.get("/agent/User/User/myFans", {
+				this.ajax.post("/agent/User/User/upgrade", {
 					uid: this.curUid
 				}, data => {
-					//关闭model
-					this.showUpGrade = false;
+					this.$vux.toast.text(data.data.datas, 'middle');
+					if (data.data.info == "1") {
+						//关闭model
+						this.showUpGrade = false;
+						//如果升级成功进行列表刷新
+						//this.$refs.fansData.triggerPullToRefresh();
+						//this.$refs.superBuyData.triggerPullToRefresh();
+					}
 				}, data => {});
 			}
 		},
 		computed: {},
-		created() {
-		},
+		created() {},
 		mounted() {},
 		activated() {
-			//设置滚动条的位置
-			this.$refs["viewbox0"].scrollTo(this.$route.meta.savedPosition["top0"] || 0);
-			this.$refs["viewbox1"].scrollTo(this.$route.meta.savedPosition["top1"] || 0);
-			this.$refs["viewbox2"].scrollTo(this.$route.meta.savedPosition["top2"] || 0);
+			setTimeout(() => {
+				this.$refs.fansData.scrollTo(0, this.topFans, true);
+				this.$refs.superBuyData.scrollTo(0, this.topSuper, true);
+				this.$refs.operatorData.scrollTo(0, this.topOpera, true);
+			})
 		},
 		beforeRouteLeave(to, from, next) {
 			//保存滚动条的位置
-			from.meta.savedPosition = {
-				top0: this.$refs["viewbox0"].getScrollTop(),
-				top1: this.$refs["viewbox1"].getScrollTop(),
-				top2: this.$refs["viewbox2"].getScrollTop()
-			};
+			this.topFans = this.$refs.fansData.getPosition().top;
+			this.topSuper = this.$refs.superBuyData.getPosition().top;
+			this.topOpera = this.$refs.operatorData.getPosition().top;
 			next();
 		}
 	}
@@ -355,6 +404,18 @@
 
 	.indexHeader {
 		background-color: #f9dc3b;
+	}
+
+	.scrollerSolt {
+		height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		img {
+			max-height: 100%;
+			max-width: 100%;
+		}
 	}
 
 	.bDeMain {

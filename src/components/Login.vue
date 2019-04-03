@@ -44,7 +44,7 @@
 		ViewBox,
 		XHeader,
 		Group,
-		XInput
+		Cell
 	} from 'vux'
 	export default {
 		name: 'Login',
@@ -52,7 +52,7 @@
 			XHeader,
 			ViewBox,
 			Group,
-			XInput
+			Cell
 		},
 		data() {
 			return {
@@ -63,7 +63,7 @@
 				verCode: '',
 				verCodeTxt: '发送验证码',
 				hasSend: false, //是否已经发送验证码
-				disabled: true,
+				disabled: false,
 				phone: "" //手机号
 			}
 		},
@@ -71,7 +71,8 @@
 		methods: {
 			//
 			refreshVerImg() {
-				this.verPicImg = "https://jingpincang.quansuwangluo.com/index/Verify/?v=" + new Date().getTime()+"&sid="+this.$store.state.sid;
+				this.verPicImg = "https://jingpincang.quansuwangluo.com/index/Verify/?v=" + new Date().getTime() + "&sid=" + this.$store
+					.state.sid;
 			},
 			checkPhone(e) {
 				this.phone = e.target.value.replace(/[^0-9]/, '');
@@ -101,13 +102,17 @@
 				}
 				if (this.hasSend) return;
 				//已发送验证码
+				this.$vux.loading.show({
+					text: '稍等...'
+				});
 				this.ajax.get("/agent/index/wed_index?mobile=" + this.phone + "&captcha=" + this.picVerCode, {}, data => {
+					this.$vux.loading.hide();
 					this.$vux.toast.text(data.data.info, 'middle');
 					//成功
 					if (data.data.status == '1') {
 						this.verCodeTxt = 60;
 						this.hasSend = true;
-						this.disabled = false;
+						//this.disabled = false;
 						//开始倒计时
 						this.countDown();
 						//model 关闭
@@ -140,22 +145,36 @@
 					this.$vux.toast.text('请输入验证码!', 'middle');
 					return
 				}
+				this.disabled = true;
+				this.$vux.loading.show({
+					text: '登陆中...'
+				});
 				this.ajax.post("/agent/index/login", {
 					sms_code: this.verCode
 				}, data => {
+					this.$vux.loading.hide();
+					//保存用户的sid
 					//成功
-					if (data.data.result == '1') {
+					if (data.data.status == '1') {
 						//跳转返回
-						this.$router.push("/home");
+						this.$router.push({
+							name: "index",
+							params: {
+								usrInfo: data.data.datas
+							}
+						});
 					} else { //失败
 						this.$vux.toast.text("验证码错误!", 'middle');
 					}
-				}, data => {})
+					this.disabled = false;
+				}, data => {
+					this.disabled = false;
+				})
 			},
 			getSession() {
 				this.ajax.get("/agent/index/login", {}, data => {
-					this.$store.commit("setSid",data.data.sid);
-					window.localStorage.setItem("liveSession",data.data.sid);
+					this.$store.commit("setSid", data.data.sid);
+					window.localStorage.setItem("liveSession", data.data.sid);
 				}, data => {});
 			}
 		},
@@ -402,7 +421,7 @@
 			}
 
 			.loginBottom {
-				position: fixed;
+				position: absolute;
 				bottom: 0;
 				left: 0;
 				width: 100%;

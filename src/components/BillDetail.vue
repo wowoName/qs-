@@ -7,8 +7,8 @@
 				<div class="screenTime"> <span>{{relayTime}}</span> <img src="../../static/images/dropDown.png" alt=""></div>
 			</datetime>
 			<div class="amountDetail">
-				<span>收益￥12364</span>
-				<span>提现￥123548</span>
+				<span>收益￥{{billInfos.cashback}}</span>
+				<span>提现￥{{billInfos.withdraw}}</span>
 			</div>
 		</div>
 		<div class="billDeCom">
@@ -18,8 +18,12 @@
 					<span>{{item.type_sn}}</span>
 					<span :style="{color: item.amount>0?'#009E03':'#FE1969'}">{{item.cost}}</span>
 				</div>
+
 			</view-box>
 		</div>
+
+		<div class="nodata" v-if="bdData.length==0">暂无数据</div>
+
 	</div>
 </template>
 
@@ -43,17 +47,31 @@
 		data() {
 			return {
 				month: new Date().getFullYear() + "-" + (new Date().getMonth() + 1),
-				bdData: []
+				bdData: [],
+				billInfos: {
+					withdraw: 0,
+					cashback: 0
+				}
 			}
 		},
 		watch: {},
 		methods: {
 			//这里应该请求数据
 			getBillData() {
-				this.ajax.get("/agent/User/User/billDetails", {}, data => {
-					console.log(data.data.datas)
-					this.bdData=data.data.datas;
-				}, data => {});
+				this.$vux.loading.show({
+					text: '加载中...'
+				});
+				this.ajax.get("/agent/User/User/billDetails?k=" + this.month.split("-")[1], {}, data => {
+					this.bdData = data.data.datas;
+					this.billInfos = {
+						withdraw: data.data.info.withdraw,
+						cashback: data.data.info.cashback
+					};
+					this.$vux.loading.hide()
+
+				}, data => {
+					this.$vux.loading.hide()
+				});
 			}
 		},
 		computed: {
@@ -86,6 +104,18 @@
 		width: 100%;
 		height: 100%;
 		background-color: #F1F2F7;
+
+		.nodata {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			width: 100%;
+			font-size: 28px;
+			color: rgba(44, 62, 80, .8);
+			z-index: 100;
+			text-align: center;
+		}
 
 		.indexHeader {
 			background-color: #f9dc3b;

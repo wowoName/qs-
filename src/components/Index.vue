@@ -1,39 +1,43 @@
 <template>
 	<div class="indexMain">
-	<!-- 	<x-header :left-options="{backText:''}" class="indexHeader"></x-header> -->
+		<!-- 	<x-header :left-options="{backText:''}" class="indexHeader"></x-header> -->
 		<div class="userInfos">
 			<div class="userImg">
-				<img :src="usrInfos.img" />
+				<img v-lazy="usrInfos.user.user_avatar" />
 			</div>
 			<div class="userNames">
 				<div class="userName">
-					<span>{{usrInfos.name}}</span>
-					<div>{{usrInfos.tag}}</div>
+					<span>{{usrInfos.user.user_name}}</span>
+					<div>{{usrInfos.user.level_cn}}</div>
 				</div>
-				<div class="userPhone">{{usrInfos.phone}}</div>
+				<div class="userPhone">{{usrInfos.user.user_mobile}}</div>
 			</div>
 		</div>
 		<div class="balance">
-			<div>{{usrInfos.balance}}</div>
+			<div>{{usrInfos.user.user_money}}</div>
 			<div>余额（元）</div>
 			<div>提现</div>
 		</div>
 		<div class="incomeDetails">
 			<div class="commission">
 				<div class="commission-item">
-					<span>0.00</span>
+					<span>{{usrInfos.today.balance_cost}}</span>
 					<span>今日佣金</span>
 				</div>
 				<div class="commission-item">
-					<span>0.00</span>
+					<span>{{usrInfos.today.balance_cost}}</span>
 					<span>本月佣金</span>
 				</div>
 			</div>
 			<div class="entrance">
-				<div class="entrance-item" @click="$router.push('myIncome')"> <img src="../../static/images/earnings.png" alt=""> <span>我的收益</span> </div>
-				<div class="entrance-item" @click="$router.push('order')"> <img src="../../static/images/order.png" alt=""> <span>订单明细</span> </div>
-				<div class="entrance-item" @click="$router.push('myFan')"> <img src="../../static/images/myfan.png" alt=""> <span>我的粉丝</span> </div>
-				<div class="entrance-item"  @click="$router.push('billDetail')"> <img src="../../static/images/bill.png" alt=""> <span>账单明细</span> </div>
+				<div class="entrance-item" @click="$router.push('myIncome')"> <img src="../../static/images/earnings.png" alt="">
+					<span>我的收益</span> </div>
+				<div class="entrance-item" @click="$router.push('order')"> <img src="../../static/images/order.png" alt=""> <span>订单明细</span>
+				</div>
+				<div class="entrance-item" @click="$router.push('myFan')"> <img src="../../static/images/myfan.png" alt=""> <span>我的粉丝</span>
+				</div>
+				<div class="entrance-item" @click="$router.push('billDetail')"> <img src="../../static/images/bill.png" alt="">
+					<span>账单明细</span> </div>
 			</div>
 		</div>
 	</div>
@@ -51,17 +55,23 @@
 		data() {
 			return {
 				usrInfos: {
-					img: require("../../static/images/userImg.jpg"),
-					name: "蜗蜗丶",
-					tag: "超级买手",
-					phone: "13969633230",
-					balance: "1258"
+					user: {
+						user_avatar: "",
+						province_name: "",
+						user_mobile: "",
+						level_cn: "",
+						user_money: 0
+					},
+					today: {
+						balance_cost: 0
+					},
+					month: {
+						balance_cost: 0
+					}
 				}
 			}
 		},
-		watch: {
-
-		},
+		watch: {},
 		methods: {
 			changeRouter(index) {
 				let _router = index === 1 ? "/home" : "/myCenter";
@@ -70,14 +80,13 @@
 				})
 			}
 		},
-		computed: {
-
-		},
+		computed: {},
 		created() {
-
+			this.usrInfos = Object.assign(this.usrInfos, this.$route.params.usrInfo)
 		},
-		mounted() {
-
+		mounted() {},
+		activated() {
+			this.usrInfos = Object.assign(this.usrInfos, this.$route.params.usrInfo)
 		}
 	}
 </script>
@@ -217,6 +226,7 @@
 			border-radius: 10px;
 			box-sizing: border-box;
 			background-color: #ffffff;
+
 			.commission {
 				width: 100%;
 				padding: 0 120px;
@@ -244,10 +254,12 @@
 				@include indexFlex(center, space-between);
 				font-size: 28px;
 				color: rgba(0, 0, 0, 1);
+
 				.entrance-item {
 					width: 112px;
 					@include indexFlex(center, space-between);
 					flex-direction: column;
+
 					img {
 						width: 42px;
 						height: 54px;

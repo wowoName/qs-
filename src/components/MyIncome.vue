@@ -3,22 +3,22 @@
 		<x-header :left-options="{backText:''}" class="indexHeader">我的收益</x-header>
 		<div class="userInfos">
 			<div>余额（元）</div>
-			<div>0</div>
+			<div>{{incomeDetails.user_money}}</div>
 			<div>提现</div>
 		</div>
 		<div class="balance">
 			<div class="title">日收入</div>
 			<div class="incomeInfos vux-balance-border">
 				<div>今日</div>
-				<div class="inItem"><span>佣金</span><span>{{incomeDetails.today.cost}}</span></div>
-				<div class="inItem"><span>付款笔数</span><span>{{incomeDetails.today.count}}</span></div>
-				<div class="inItem"><span>计算收入</span><span>{{incomeDetails.today.balance_cost}}</span></div>
+				<income-item title="佣金" txt-color="#FE1969" :value="incomeDetails.today.cost" :is-loading="loading"></income-item>
+				<income-item title="付款笔数" txt-color="#FE1969" :value="incomeDetails.today.count" :is-loading="loading"></income-item>
+				<income-item title="计算收入" txt-color="#FE1969" :value="incomeDetails.today.balance_cost" :is-loading="loading"></income-item>
 			</div>
 			<div class="incomeInfos vux-balance-border">
 				<div>昨日</div>
-				<div class="inItemtest"><span>佣金</span><span>￥{{incomeDetails.yesterday.cost}}</span></div>
-				<div class="inItemtest"><span>付款笔数</span><span>￥{{incomeDetails.yesterday.count}}</span></div>
-				<div class="inItemtest"><span>计算收入</span><span>￥{{incomeDetails.yesterday.balance_cost}}</span></div>
+				<income-item title="佣金"  :value="incomeDetails.yesterday.cost" :is-loading="loading"></income-item>
+				<income-item title="付款笔数"  :value="incomeDetails.yesterday.count" :is-loading="loading"></income-item>
+				<income-item title="计算收入"  :value="incomeDetails.yesterday.balance_cost" :is-loading="loading"></income-item>
 			</div>
 		</div>
 
@@ -27,31 +27,34 @@
 			<div class="title">月收入</div>
 			<div class="incomeInfos vux-balance-border">
 				<div>本月</div>
-				<div class="inItemtest"><span>佣金</span><span>￥{{incomeDetails.month.cost}}</span></div>
-				<div class="inItemtest"><span>付款笔数</span><span>￥{{incomeDetails.month.count}}</span></div>
-				<div class="inItemtest"><span>计算收入</span><span>￥{{incomeDetails.month.balance_cost}}</span></div>
+				<income-item title="佣金" :value="incomeDetails.month.cost" :is-loading="loading"></income-item>
+				<income-item title="付款笔数" :value="incomeDetails.month.count" :is-loading="loading"></income-item>
+				<income-item title="计算收入" :value="incomeDetails.month.balance_cost" :is-loading="loading"></income-item>
 			</div>
 			<div class="incomeInfos vux-balance-border">
 				<div>上月</div>
-				<div class="inItemtest"><span>佣金</span><span>￥{{incomeDetails.last_month.cost}}</span></div>
-				<div class="inItemtest"><span>付款笔数</span><span>￥{{incomeDetails.last_month.count}}</span></div>
-				<div class="inItemtest"><span>计算收入</span><span>￥{{incomeDetails.last_month.balance_cost}}</span></div>
+				<income-item title="佣金" :value="incomeDetails.last_month.cost" :is-loading="loading"></income-item>
+				<income-item title="付款笔数" :value="incomeDetails.last_month.count" :is-loading="loading"></income-item>
+				<income-item title="计算收入" :value="incomeDetails.last_month.balance_cost" :is-loading="loading"></income-item>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script>
+	import IncomeItem from "@/components/incometemplate";
 	import {
 		XHeader
 	} from 'vux'
 	export default {
 		name: 'MyIncome',
 		components: {
-			XHeader
+			XHeader,
+			IncomeItem
 		},
 		data() {
 			return {
+				loading: true,
 				incomeDetails: {
 					today: {
 						cost: 0,
@@ -83,18 +86,19 @@
 			getIncomeData() {
 				this.ajax.get("/agent/User/User/myProfit", {}, data => {
 					this.incomeDetails = data.data.datas;
-				}, data => {});
+					this.$nextTick(() => {
+						this.loading = false;
+					})
+				}, data => {
+					this.loading = false;
+				});
 			}
 		},
-		computed: {
-
-		},
+		computed: {},
 		created() {
 			this.getIncomeData();
 		},
-		mounted() {
-
-		}
+		mounted() {}
 	}
 </script>
 
@@ -110,26 +114,6 @@
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
-	}
-
-	@mixin incomesCom ($textColo:#FE1969) {
-		@include indexFlex(center, space-between);
-		flex-direction: column;
-
-		span:nth-child(1) {
-			color: #7B7B7B;
-		}
-
-		span:nth-child(2) {
-			display: inline-block;
-			width: 180px;
-			white-space: nowrap;
-			overflow: hidden;
-			text-overflow: ellipsis;
-			margin-top: 10px;
-			color: $textColo;
-			font-size: 30px;
-		}
 	}
 
 	@mixin balanceCom ($top:388px) {
@@ -174,18 +158,22 @@
 				background-color: #F1F2F7;
 			}
 
+			.is-loading {
+				width: 46px;
+				height: 46px;
+				display: inline-block;
+				vertical-align: middle;
+				-webkit-animation: weuiLoading 1s steps(12, end) infinite;
+				animation: weuiLoading 1s steps(12, end) infinite;
+				background: transparent url(../../static/images/loading-inner.png) no-repeat;
+				background-size: 100%;
+			}
+
 			>div:nth-child(1) {
 				width: 80px;
 				text-align: left;
 			}
 
-			.inItem {
-				@include incomesCom;
-			}
-
-			.inItemtest {
-				@include incomesCom(#111111);
-			}
 		}
 	}
 
@@ -246,6 +234,8 @@
 
 		.balance-month {
 			@include balanceCom(784px);
+
+
 		}
 	}
 </style>

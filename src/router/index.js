@@ -17,8 +17,6 @@ import MyFan from "@/components/MyFan";
 import SearchFans from "@/components/SearchFans";
 //订单
 import Order from "@/components/Order";
-
-import List from "@/components/List";
 Vue.use(Router)
 
 const router = new Router({
@@ -74,7 +72,11 @@ const router = new Router({
 	}, {
 		path: '/searchFans',
 		name: 'searchFans',
-		component: SearchFans
+		component: SearchFans,
+		meta: {
+			keepAlive: true,
+			requireAuth: true
+		}
 	}, {
 		path: '/order',
 		name: 'order',
@@ -89,24 +91,20 @@ const router = new Router({
 				top3:0
 			}
 		}
-	},{
-		path: '/list',
-		name: 'list',
-		component: List
 	}]
 });
 
 
 function getLocal() {
-	if (window.localStorage.getItem("quansuIds"))
-		store.state.userIds = window.localStorage.getItem("quansuIds");
+	if (window.localStorage.getItem("liveSession"))
+		store.state.sid = window.localStorage.getItem("liveSession");
 }
 //路由跳转拦截拦截
 router.beforeEach((to, from, next) => {
 	getLocal();
 	// 判断该路由是否需要登录权限
 	if (to.meta.requireAuth) {
-		if (store.state.userIds) // 通过vuex state获取当前的token是否存在【 true 进行下一步】
+		if (store.state.sid) // 通过vuex state获取当前的token是否存在【 true 进行下一步】
 			next();
 		else //没有登录状态 返回到登录页 
 			next({
