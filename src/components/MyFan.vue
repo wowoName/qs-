@@ -204,7 +204,7 @@
 					//如果是下拉刷新页数置为1;上拉加载可用
 					if (reset)
 						this[pageNum] = 1, this[entriy + "Fin"] = false;
-					this.ajax.get("/agent/User/User/myFans?state=" + type + "&k=&p=" + this[pageNum], {}, data => {
+					this.ajax.get("/agent/index/myFans?state=" + type + "&k=&p=" + this[pageNum], {}, data => {
 						if (reset)
 							this[entriy] = data.data.datas;
 						else
@@ -250,7 +250,7 @@
 			},
 			//升级超级买手获取上级的信息
 			getUpGradeUser() {
-				this.ajax.get("/agent/User/User/upgrade?uid=" + this.curUid, {}, data => {
+				this.ajax.get("/agent/index/upgrade?uid=" + this.curUid, {}, data => {
 					//保存上级用户的信息
 					this.upGreadeInfos = data.data.datas;
 					this.showUpGrade = true;
@@ -258,7 +258,7 @@
 			},
 			//进行升级
 			toUpgrade() {
-				this.ajax.post("/agent/User/User/upgrade", {
+				this.ajax.post("/agent/index/upgrade", {
 					uid: this.curUid
 				}, data => {
 					this.$vux.toast.text(data.data.datas, 'middle');

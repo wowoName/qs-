@@ -61,7 +61,7 @@
 				this.$vux.loading.show({
 					text: '加载中...'
 				});
-				this.ajax.get("/agent/User/User/billDetails?k=" + this.month.split("-")[1], {}, data => {
+				this.ajax.get("/agent/index/billDetails?k=" + this.month.split("-")[1], {}, data => {
 					this.bdData = data.data.datas;
 					this.billInfos = {
 						withdraw: data.data.info.withdraw,

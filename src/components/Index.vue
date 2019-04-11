@@ -78,15 +78,20 @@
 				this.$router.push({
 					path: _router
 				})
+			},
+			getUserInfo() {
+				this.ajax.get("/agent/index/login", {}, data => {
+					this.usrInfos = Object.assign(thisusrInfos,data.data.datas);
+				}, data => {});
 			}
 		},
 		computed: {},
 		created() {
-			this.usrInfos = Object.assign(this.usrInfos, this.$route.params.usrInfo)
+			this.getUserInfo();
 		},
 		mounted() {},
 		activated() {
-			this.usrInfos = Object.assign(this.usrInfos, this.$route.params.usrInfo)
+			this.getUserInfo();
 		}
 	}
 </script>

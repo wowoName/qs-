@@ -84,7 +84,7 @@
 		},
 		methods: {
 			getIncomeData() {
-				this.ajax.get("/agent/User/User/myProfit", {}, data => {
+				this.ajax.get("/agent/index/myProfit", {}, data => {
 					this.incomeDetails = data.data.datas;
 					this.$nextTick(() => {
 						this.loading = false;

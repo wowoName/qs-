@@ -45,7 +45,7 @@ class HttpRequest {
 	get(httpUrl, paramsData, successFun, errorFun = () => {}) {
 		if(httpUrl.indexOf("?")>-1)httpUrl+="&sid="+window.localStorage.getItem("liveSession") || "";
 		else httpUrl+="?sid="+ window.localStorage.getItem("liveSession") || "";
-		let httpUrls=httpUrl.replace('/agent','https://jingpincang.quansuwangluo.com')
+		let httpUrls=httpUrl.replace('/agent','https://jingpincang.quansuwangluo.com');
 		axios.get(httpUrls, qs.stringify(paramsData))
 			.then(function(res) {
 				successFun(res)

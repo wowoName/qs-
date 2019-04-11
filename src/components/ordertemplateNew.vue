@@ -66,7 +66,7 @@
 					//如果是下拉刷新页数置为1;上拉加载可用
 					if (reset)
 						this.pageSize = 1, this.noData = false;
-					this.ajax.get("/agent/User/user/myOrder?suc=" + this.suc + "&p=" + this.pageSize, {}, data => {
+					this.ajax.get("/agent/index/myOrder?suc=" + this.suc + "&p=" + this.pageSize, {}, data => {
 						if (reset)
 							this.listData = data.data.datas;
 						else

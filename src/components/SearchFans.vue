@@ -51,7 +51,7 @@
 		watch: {},
 		methods: {
 			doSearch() {
-				this.ajax.get("/agent/User/User/myFans?state=1&k="+this.fansName+"&p=1", {}, data => {
+				this.ajax.get("/agent/index/myFans?state=1&k="+this.fansName+"&p=1", {}, data => {
 					this.fansData= data.data.datas;
 				}, data => {});
 			},
