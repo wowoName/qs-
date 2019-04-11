@@ -153,9 +153,9 @@
 					sms_code: this.verCode
 				}, data => {
 					this.$vux.loading.hide();
+					this.$vux.toast.text(data.data.datas, 'middle');
 					//保存用户的sid
-					//成功
-					if (data.data.status == '1') {
+					if (data.data.info == '1') {
 						//跳转返回
 						this.$router.push({
 							name: "index",
@@ -163,8 +163,6 @@
 								usrInfo: data.data.datas
 							}
 						});
-					} else { //失败
-						this.$vux.toast.text("验证码错误!", 'middle');
 					}
 					this.disabled = false;
 				}, data => {

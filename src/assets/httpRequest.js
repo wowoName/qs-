@@ -12,12 +12,12 @@ let axiosToken = null,
 	});
 //请求超时时间
 axios.defaults.timeout = 3000;
-axios.defaults.headers = {
-	uid: 1,
-	aid: 1,
-	sid: sid,
-	"Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
-}
+// axios.defaults.headers = {
+// 	uid: 1,
+// 	aid: 1,
+// 	sid: sid,
+// 	"Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
+// }
 // axios拦截器
 axios.interceptors.request.use(config => {
 		// 在发送请求之前做些什么
@@ -44,8 +44,10 @@ axios.interceptors.response.use(
 
 class HttpRequest {
 	get(httpUrl, paramsData, successFun, errorFun = () => {}) {
-		let httpUrls=httpUrl.replace('/agent','https://jingpincang.quansuwangluo.com')
-		axios.get(httpUrls, qs.stringify(paramsData))
+		if(httpUrl.indexOf("?")>-1)httpUrl+="&sid="+sid;
+		else httpUrl+="?sid="+sid;
+		//let httpUrls=httpUrl.replace('/agent','https://jingpincang.quansuwangluo.com')
+		axios.get(httpUrl, qs.stringify(paramsData))
 			.then(function(res) {
 				successFun(res)
 			})
@@ -56,9 +58,11 @@ class HttpRequest {
 	};
 	// post请求
 	post(httpUrl, paramsData, successFun, errorFun = () => {}) {
-		let httpUrls=httpUrl.replace('/agent','https://jingpincang.quansuwangluo.com')
+		paramsData.sid=sid;
+		
+		//let httpUrls=httpUrl.replace('/agent','https://jingpincang.quansuwangluo.com')
 		//打包前去除代理前缀 /anget
-		axios.post(httpUrls, qs.stringify(paramsData), {
+		axios.post(httpUrl, qs.stringify(paramsData), {
 				//终止请求
 				cancelToken: new axios.CancelToken(function executor(c) {
 					axiosToken = c;
