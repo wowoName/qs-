@@ -4,7 +4,6 @@ import Vue from 'vue';
 
 //终止axios的fun
 let axiosToken = null,
-	sid = window.localStorage.getItem("liveSession") || "",
 	vm = new Vue({
 		data: {
 			httpCount: 0
@@ -44,10 +43,10 @@ axios.interceptors.response.use(
 
 class HttpRequest {
 	get(httpUrl, paramsData, successFun, errorFun = () => {}) {
-		if(httpUrl.indexOf("?")>-1)httpUrl+="&sid="+sid;
-		else httpUrl+="?sid="+sid;
-		let httpUrls=httpUrl.replace('/agent','https://jingpincang.quansuwangluo.com')
-		axios.get(httpUrls, qs.stringify(paramsData))
+		if(httpUrl.indexOf("?")>-1)httpUrl+="&sid="+window.localStorage.getItem("liveSession") || "";
+		else httpUrl+="?sid="+ window.localStorage.getItem("liveSession") || "";
+		//let httpUrls=httpUrl.replace('/agent','https://jingpincang.quansuwangluo.com')
+		axios.get(httpUrl, qs.stringify(paramsData))
 			.then(function(res) {
 				successFun(res)
 			})
@@ -58,10 +57,10 @@ class HttpRequest {
 	};
 	// post请求
 	post(httpUrl, paramsData, successFun, errorFun = () => {}) {
-		paramsData.sid=sid;
-		let httpUrls=httpUrl.replace('/agent','https://jingpincang.quansuwangluo.com')
+		paramsData.sid=window.localStorage.getItem("liveSession") || "";
+		//let httpUrls=httpUrl.replace('/agent','https://jingpincang.quansuwangluo.com')
 		//打包前去除代理前缀 /anget
-		axios.post(httpUrls, qs.stringify(paramsData), {
+		axios.post(httpUrl, qs.stringify(paramsData), {
 				//终止请求
 				cancelToken: new axios.CancelToken(function executor(c) {
 					axiosToken = c;
