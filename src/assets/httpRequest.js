@@ -46,7 +46,7 @@ class HttpRequest {
 	get(httpUrl, paramsData, successFun, errorFun = () => {}) {
 		if(httpUrl.indexOf("?")>-1)httpUrl+="&sid="+sid;
 		else httpUrl+="?sid="+sid;
-		//let httpUrls=httpUrl.replace('/agent','https://jingpincang.quansuwangluo.com')
+		let httpUrls=httpUrl.replace('/agent','https://jingpincang.quansuwangluo.com')
 		axios.get(httpUrl, qs.stringify(paramsData))
 			.then(function(res) {
 				successFun(res)
@@ -60,7 +60,7 @@ class HttpRequest {
 	post(httpUrl, paramsData, successFun, errorFun = () => {}) {
 		paramsData.sid=sid;
 		
-		//let httpUrls=httpUrl.replace('/agent','https://jingpincang.quansuwangluo.com')
+		let httpUrls=httpUrl.replace('/agent','https://jingpincang.quansuwangluo.com')
 		//打包前去除代理前缀 /anget
 		axios.post(httpUrl, qs.stringify(paramsData), {
 				//终止请求
