@@ -2,7 +2,8 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 Vue.use(Vuex);
 const state = {
-	sid: ""
+	sid: "",
+	token:""
 };
 export default new Vuex.Store({
 	state,
@@ -10,6 +11,9 @@ export default new Vuex.Store({
 		//保存用户的sessionID
 		setSid(state, id) {
 			state.sid = id;
+		},
+		setToken(state, id) {
+			state.token = id;
 		}
 	}
 })

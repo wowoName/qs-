@@ -45,7 +45,8 @@
 		XHeader,
 		Group,
 		Cell
-	} from 'vux'
+	} from 'vux';
+	import axios from 'axios';
 	export default {
 		name: 'Login',
 		components: {
@@ -150,18 +151,24 @@
 					text: '登陆中...'
 				});
 				this.ajax.post("/agent/index/sms_mobile", {
-					sms_code: this.verCode,
-					mobile: this.phone
+					"sms_code": this.verCode,
+					"mobile": this.phone
 				}, data => {
 					this.$vux.loading.hide();
 					this.$vux.toast.text(data.data.info, 'middle');
 					//保存用户的sid
 					if (data.data.info == '1') {
+						this.$store.commit("setToken", data.data.datas);
+						//保存token
+						window.localStorage.setItem("liveToken",data.data.datas);
+						axios.defaults.headers = {
+							TOKEN: data.data.datas,
+							'Content-Type': 'application/x-www-form-urlencoded'
+						};
 						//跳转返回
 						this.$router.push({
 							name: "index",
 							params: {
-								usrInfo: data.data.datas
 							}
 						});
 					}

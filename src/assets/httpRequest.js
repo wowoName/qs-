@@ -12,6 +12,10 @@ let axiosToken = null,
 	});
 //请求超时时间
 axios.defaults.timeout = 3000;
+axios.defaults.headers = {
+	TOKEN: window.localStorage.getItem("liveToken"),
+	'Content-Type': 'application/x-www-form-urlencoded'
+};
 // axios拦截器
 axios.interceptors.request.use(config => {
 		// 在发送请求之前做些什么

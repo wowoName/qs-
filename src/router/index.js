@@ -79,18 +79,26 @@ const router = new Router({
 		component: Order,
 		meta: {
 			keepAlive: true,
-			requireAuth: true,
-			savedPosition:{
-			}
+			requireAuth: true
 		}
 	}]
 });
+
+function getToken(){
+	let cToken=window.localStorage.getItem("liveToken");
+	if(cToken)
+		store.state.token=cToken;
+}
 //路由跳转拦截拦截
 router.beforeEach((to, from, next) => {
+	getToken();
 	// 判断该路由是否需要登录权限
 	if (to.meta.requireAuth) {
-		if (store.state.sid) // 通过vuex state获取当前的token是否存在【 true 进行下一步】
-			next();
+		if (store.state.token) // 通过vuex state获取当前的token是否存在【 true 进行下一步】
+			{
+				next();
+				console.log("可以")
+			}
 		else //没有登录状态 返回到登录页 
 			next({
 				path: '/login'
