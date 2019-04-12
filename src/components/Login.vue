@@ -149,11 +149,11 @@
 				this.$vux.loading.show({
 					text: '登陆中...'
 				});
-				this.ajax.post("/agent/index/login", {
+				this.ajax.post("/agent/index/sms_mobile", {
 					sms_code: this.verCode
 				}, data => {
 					this.$vux.loading.hide();
-					this.$vux.toast.text(data.data.datas, 'middle');
+					this.$vux.toast.text(data.data.info, 'middle');
 					//保存用户的sid
 					if (data.data.info == '1') {
 						//跳转返回
@@ -172,7 +172,6 @@
 			getSession() {
 				this.ajax.get("/agent/index/login", {}, data => {
 					this.$store.commit("setSid", data.data.sid);
-					window.localStorage.setItem("liveSession", data.data.sid);
 				}, data => {});
 			}
 		},

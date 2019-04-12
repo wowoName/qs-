@@ -64,9 +64,6 @@ const router = new Router({
 			keepAlive: true,
 			requireAuth: true,
 			savedPosition:{
-				top0:0,
-				top1:0,
-				top2:0
 			}
 		}
 	}, {
@@ -74,7 +71,6 @@ const router = new Router({
 		name: 'searchFans',
 		component: SearchFans,
 		meta: {
-			keepAlive: true,
 			requireAuth: true
 		}
 	}, {
@@ -85,23 +81,12 @@ const router = new Router({
 			keepAlive: true,
 			requireAuth: true,
 			savedPosition:{
-				top0:0,
-				top1:0,
-				top2:0,
-				top3:0
 			}
 		}
 	}]
 });
-
-
-function getLocal() {
-	if (window.localStorage.getItem("liveSession"))
-		store.state.sid = window.localStorage.getItem("liveSession");
-}
 //路由跳转拦截拦截
 router.beforeEach((to, from, next) => {
-	getLocal();
 	// 判断该路由是否需要登录权限
 	if (to.meta.requireAuth) {
 		if (store.state.sid) // 通过vuex state获取当前的token是否存在【 true 进行下一步】

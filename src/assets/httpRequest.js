@@ -1,7 +1,8 @@
 import axios from 'axios';
 import qs from "qs";
 import Vue from 'vue';
-
+import store from "@/vuex/store";
+import router from '@/router';
 //终止axios的fun
 let axiosToken = null,
 	vm = new Vue({
@@ -11,12 +12,6 @@ let axiosToken = null,
 	});
 //请求超时时间
 axios.defaults.timeout = 3000;
-// axios.defaults.headers = {
-// 	uid: 1,
-// 	aid: 1,
-// 	sid: sid,
-// 	"Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
-// }
 // axios拦截器
 axios.interceptors.request.use(config => {
 		// 在发送请求之前做些什么
@@ -29,7 +24,10 @@ axios.interceptors.response.use(
 	response => {
 		//请求完成token置空
 		axiosToken = null;
-		return response;
+		if (response.data.info == "0")
+			router.push("/login");
+		else
+			return response;
 	},
 	error => {
 		//请求完成token置空
@@ -43,9 +41,9 @@ axios.interceptors.response.use(
 
 class HttpRequest {
 	get(httpUrl, paramsData, successFun, errorFun = () => {}) {
-		if(httpUrl.indexOf("?")>-1)httpUrl+="&sid="+window.localStorage.getItem("liveSession") || "";
-		else httpUrl+="?sid="+ window.localStorage.getItem("liveSession") || "";
-		let httpUrls=httpUrl.replace('/agent','https://jingpincang.quansuwangluo.com');
+		if (httpUrl.indexOf("?") > -1) httpUrl += "&sid=" + store.state.sid || "";
+		else httpUrl += "?sid=" + store.state.sid || "";
+		let httpUrls = httpUrl.replace('/agent', 'https://jingpincang.quansuwangluo.com');
 		axios.get(httpUrls, qs.stringify(paramsData))
 			.then(function(res) {
 				successFun(res)
@@ -57,8 +55,8 @@ class HttpRequest {
 	};
 	// post请求
 	post(httpUrl, paramsData, successFun, errorFun = () => {}) {
-		paramsData.sid=window.localStorage.getItem("liveSession") || "";
-		let httpUrls=httpUrl.replace('/agent','https://jingpincang.quansuwangluo.com')
+		paramsData.sid = store.state.sid || "";
+		let httpUrls = httpUrl.replace('/agent', 'https://jingpincang.quansuwangluo.com')
 		//打包前去除代理前缀 /anget
 		axios.post(httpUrls, qs.stringify(paramsData), {
 				//终止请求

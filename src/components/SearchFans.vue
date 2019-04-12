@@ -69,7 +69,6 @@
 
 		},
 		created() {
-
 		},
 		mounted() {
 

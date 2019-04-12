@@ -80,14 +80,13 @@
 				})
 			},
 			getUserInfo() {
-				this.ajax.get("/agent/index/login", {}, data => {
-					this.usrInfos = Object.assign(thisusrInfos,data.data.datas);
+				this.ajax.get("/agent/index/my", {}, data => {
+					this.usrInfos = Object.assign(this.usrInfos, data.data.datas);
 				}, data => {});
 			}
 		},
 		computed: {},
 		created() {
-			this.getUserInfo();
 		},
 		mounted() {},
 		activated() {
