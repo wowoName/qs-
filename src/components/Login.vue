@@ -150,7 +150,8 @@
 					text: '登陆中...'
 				});
 				this.ajax.post("/agent/index/sms_mobile", {
-					sms_code: this.verCode
+					sms_code: this.verCode,
+					mobile: this.phone
 				}, data => {
 					this.$vux.loading.hide();
 					this.$vux.toast.text(data.data.info, 'middle');
