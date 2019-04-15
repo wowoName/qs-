@@ -1,7 +1,7 @@
 <template>
 	<div class="register-com">
-		<x-header :left-options="{backText:''}" class="loginHeader">登录</x-header>
-		<div class="main">
+		<div class="main clearfix">
+			<x-header :left-options="{backText:'',showBack:false}" class="loginHeader">登录</x-header>
 			<div class="title">登录</div>
 			<div class="formMain">
 				<div class="formMain-item vux-border">
@@ -18,8 +18,9 @@
 			<div class="doLogin">
 				<input type="button" :disabled="disabled" value="登录" @click="doLogin">
 			</div>
-			<div class="loginBottom"></div>
+
 		</div>
+		<div class="loginBottom"></div>
 		<!-- 图像验证码 -->
 		<div class="vue-popup">
 			<div class="mask" @click="showVerCode=false" v-show="showVerCode"></div>
@@ -160,7 +161,7 @@
 					if (data.data.info == '1') {
 						this.$store.commit("setToken", data.data.datas);
 						//保存token
-						window.localStorage.setItem("liveToken",data.data.datas);
+						window.localStorage.setItem("liveToken", data.data.datas);
 						axios.defaults.headers = {
 							TOKEN: data.data.datas,
 							'Content-Type': 'application/x-www-form-urlencoded'
@@ -168,8 +169,7 @@
 						//跳转返回
 						this.$router.push({
 							name: "index",
-							params: {
-							}
+							params: {}
 						});
 					}
 					this.disabled = false;
@@ -200,6 +200,29 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+	.clearfix:after {
+		content: ".";
+		display: block;
+		height: 0;
+		clear: both;
+		visibility: hidden;
+	}
+
+	.clearfix {
+		display: inline-block;
+	}
+
+	/* Hides from IE-mac \*/
+	* html .clearfix {
+		height: 1%;
+	}
+
+	.clearfix {
+		display: block;
+	}
+
+	/* End hide from IE-mac */
+
 	.slide-fade-enter-active {
 		transition: all .5s ease;
 	}
@@ -230,6 +253,8 @@
 
 	.register-com {
 		height: 100%;
+
+		box-sizing: border-box;
 		background-color: #ffffff;
 
 		.vue-popup {
@@ -323,12 +348,10 @@
 		}
 
 		.main {
-			position: absolute;
-			top: 60px;
-			bottom: 0;
-			left: 0;
-			right: 0;
-			overflow: auto;
+			height: auto;
+			min-height: 100%;
+			padding-bottom: 162px;
+			box-sizing: border-box;
 			background-color: #ffffff;
 
 			.title {
@@ -425,15 +448,17 @@
 				}
 			}
 
-			.loginBottom {
-				position: absolute;
-				bottom: 0;
-				left: 0;
-				width: 100%;
-				height: 162px;
-				background: url(../../static/images/loginBg.png) no-repeat center center /100% 100%;
-			}
 
+
+		}
+
+		.loginBottom {
+			position: relative;
+			margin-top: -162px;
+			width: 100%;
+			height: 162px;
+			clear: both;
+			background: url(../../static/images/loginBg.png) no-repeat center center /100% 100%;
 		}
 	}
 </style>
