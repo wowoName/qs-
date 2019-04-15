@@ -29,14 +29,7 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 header 高度为 60px
 tab 高度  66px
 
-//弹窗提示
-this.$vux.toast.text(msg, 'middle');
-//loading 
- this.$vux.loading.show({
-text: "申请提交中..."
-});
-//取消加载
-this.$vux.loading.hide();
+本项目使用单独的ui vux;
+install完之后进行本地覆盖即可
 
-//login 中获取用户的session
 
