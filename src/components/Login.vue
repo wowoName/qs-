@@ -5,13 +5,13 @@
 			<div class="title">登录</div>
 			<div class="formMain">
 				<div class="formMain-item vux-border">
-					<img src="../../static/images/loginPhone.png" alt="" class="phoneImg vux-img-border">
+					<img src="../../static/images/loginPhone.png" alt="" class="phoneImg ">
 					<input class="phoneNo" type="tel" v-model="phone" @input="checkPhone" placeholder="输入您常用手机号" maxlength="11">
 					<!-- @click="sendVerCode" -->
 					<div class="sendCode" slot="right" @click="getVerCode" v-html="verCodeTxtCom"></div>
 				</div>
 				<div class="formMain-item vux-border">
-					<img src="../../static/images/loginCode.png" alt="" class="phoneImg vux-img-border">
+					<img src="../../static/images/loginCode.png" alt="" class="phoneImg ">
 					<input type="text" class="verCode" v-model="verCode">
 				</div>
 			</div>
