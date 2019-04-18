@@ -60,24 +60,25 @@ export default {
       if (Number(this.wdAmount) > Number(this.$route.params.amount)) {
         this.wdAmount = this.$route.params.amount;
       }
-      console.log(this.wdAmount);
     },
     //进行提现操作
     withdrawal() {
       this.$vux.loading.show({
-        text: '申请中...' + this.wdAmount
+        text: '申请中...'
       });
-      return
-      this.ajax.post("/agent/index/sms_mobile", {
-        "sms_code": this.verCode,
-        "mobile": this.phone
+      this.ajax.post("/agent/index/tixian", {
+        "amount": this.wdAmount//提现金额
       }, data => {
         this.$vux.loading.hide();
-        if (data.data.info == '1')
+        this.$vux.toast.text(data.data.info, 'middle');
+        if (data.data.status == '1') {
           //进行首页余额的刷新
           this.$store.commit("setRefresh", true);
-        else
-          this.$vux.toast.text(data.data.info, 'middle');
+          setTimeout(() => {
+            this.$router.push('/')
+          }, 2000);
+        }
+
 
         this.disabled = false;
       }, data => {

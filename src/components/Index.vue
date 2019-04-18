@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import { XHeader } from "vux";
+import { XHeader } from "qsvux";
 export default {
   name: "Index",
   components: {
@@ -161,7 +161,7 @@ export default {
 
       .userName {
         margin-bottom: 14px;
-
+        @include indexFlex(center, center);
         span {
           display: inline-block;
           max-width: 304px;

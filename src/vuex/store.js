@@ -2,9 +2,9 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 Vue.use(Vuex);
 const state = {
-    sid: "1",
-    token: "1",
-    level: "0",
+    sid: "",
+    token: "",
+    level: "",
     refreshHome: false //是否刷首页的余额
 };
 export default new Vuex.Store({
