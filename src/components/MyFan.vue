@@ -10,9 +10,10 @@
 		<tab active-color="#111111" default-color="#111111" bar-active-color="#FE1969" line-width="0.125rem" custom-bar-width="2.0625rem">
 			<tab-item :selected="tabIndex===0" @on-item-click="onItemClick" :badge-label="fansDataTotal" badge-background="transparent"
 			 badge-color="#FE1969">粉丝</tab-item>
-			<tab-item :selected="tabIndex===1" @on-item-click="onItemClick" :badge-label="superBuyDataTotal" badge-background="transparent"
+			<tab-item  :selected="tabIndex===1" @on-item-click="onItemClick" :badge-label="superBuyDataTotal" badge-background="transparent"
 			 badge-color="#FE1969">超级买手</tab-item>
-			<tab-item :selected="tabIndex===2" @on-item-click="onItemClick" :badge-label="operatorDataTotal" badge-background="transparent"
+			 <!-- 只有运营中心可以看见的模块 -->
+			<tab-item v-if="curlevel=='2'" :selected="tabIndex===2" @on-item-click="onItemClick" :badge-label="operatorDataTotal" badge-background="transparent"
 			 badge-color="#FE1969">运营商</tab-item>
 		</tab>
 		<div class="myfanCon">
@@ -23,15 +24,17 @@
 							<img src="../../static/images/dropLoading.gif" alt="">
 						</div>
 						<div class="myfanItem" v-for="(item,index) in fansData" :key="item.uid">
-							<div class="fansImg">
-								<img v-lazy="item.fans.user_avatar" alt="">
+							<div class="userInfo">
+								<div class="fansImg">
+									<img v-lazy="item.fans.user_avatar" alt="">
+								</div>
+								<div class="fansName">
+									<span>{{item.fans.user_name}}</span><span>{{item.fans.binded_time}}</span>
+								</div>
 							</div>
-							<div class="fansName">
-								<span>{{item.fans.user_name}}</span><span>{{item.fans.binded_time}}</span>
+							<div class="fansAmount" :style="{'text-align':curlevel=='2'?'center':'right'}">粉丝数<span>{{item.cout}}</span>
 							</div>
-							<div class="fansAmount">粉丝数<span>{{item.cout}}</span>
-							</div>
-							<div class="upgrade" @click="hasUpGreade(item.uid)">
+							<div v-if="curlevel=='2'" class="upgrade" @click="hasUpGreade(item.uid)">
 								<span>升级</span>
 							</div>
 						</div>
@@ -43,15 +46,17 @@
 							<img src="../../static/images/dropLoading.gif" alt="">
 						</div>
 						<div class="myfanItem-superBuys" v-for="(item,index) in superBuyData" :key="Number(item.uid)*212">
-							<div class="fansImg">
-								<img v-lazy="item.fans.user_avatar" alt="">
+							<div class="userInfo">
+								<div class="fansImg">
+									<img v-lazy="item.fans.user_avatar" alt="">
+								</div>
+								<div class="fansName">
+									<span>{{item.fans.user_name}}</span><span>{{item.fans.binded_time}}</span>
+								</div>
 							</div>
-							<div class="fansName">
-								<span>{{item.fans.user_name}}</span><span>{{item.fans.binded_time}}</span>
+							<div class="fansAmount" :style="{'text-align':(curlevel=='2'?'center':'left')}">粉丝数<span>{{item.cout}}</span>
 							</div>
-							<div class="fansAmount">粉丝数<span>{{item.cout}}</span>
-							</div>
-							<div class="upgrade"><span>￥{{item.yuejie}}</span></div>
+							<div v-if="curlevel=='2'" class="upgrade"><span>￥{{item.yuejie}}</span></div>
 						</div>
 					</scroller>
 				</swiper-item>
@@ -61,11 +66,13 @@
 							<img src="../../static/images/dropLoading.gif" alt="">
 						</div>
 						<div class="myfanItem-superBuys" v-for="(item,index) in operatorData" :key="Number(item.uid)*333">
-							<div class="fansImg">
-								<img v-lazy="item.fans.user_avatar" alt="">
-							</div>
-							<div class="fansName">
-								<span>{{item.fans.user_name}}</span><span>{{item.fans.binded_time}}</span>
+							<div class="userInfo">
+								<div class="fansImg">
+									<img v-lazy="item.fans.user_avatar" alt="">
+								</div>
+								<div class="fansName">
+									<span>{{item.fans.user_name}}</span><span>{{item.fans.binded_time}}</span>
+								</div>
 							</div>
 							<div class="fansAmount">粉丝数<span>{{item.cout}}</span>
 							</div>
@@ -111,8 +118,6 @@
 				</div>
 			</transition>
 		</div>
-
-
 	</div>
 </template>
 
@@ -228,6 +233,7 @@
 					}, data => {
 						resolve(0);
 					});
+					
 				})
 			},
 			//数据分发处理
@@ -272,7 +278,11 @@
 				}, data => {});
 			}
 		},
-		computed: {},
+		computed: {
+			curlevel(){
+				return this.$store.state.level;
+			}
+		},
 		created() {},
 		mounted() {},
 		activated() {
@@ -322,9 +332,13 @@
 	@mixin tabCom ($fnWidth:225px, $faWidth:225px, $ugWidth:112px) {
 		padding: 20px 24px;
 		margin-bottom: 20px;
-		@include flexCom;
+		@include flexCom(space-between);
 		background-color: #ffffff;
-
+		.userInfo{
+			display: flex;
+			align-items: center;
+			justify-content: flex-start;
+		}
 		.fansImg {
 			width: 90px;
 			height: 90px;
@@ -343,7 +357,6 @@
 			width: $fnWidth;
 			@include flexCom;
 			flex-direction: column;
-
 			span {
 				display: inline-block;
 				width: 100%;
@@ -363,7 +376,7 @@
 			@include textOverflows;
 			font-size: 26px;
 			color: #111111;
-
+			text-align: right;
 			span {
 				color: #FE1969;
 			}

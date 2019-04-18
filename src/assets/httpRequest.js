@@ -38,8 +38,6 @@ axios.interceptors.response.use(
 		axiosToken = null;
 		//提示信息
 		Vue.$vux.toast.text("请稍后再试...", 'center');
-		/*if(axios.isCancel(error)) Vue.$vux.toast.text(error.message, 'center');
-		else  	Vue.$vux.toast.text("请稍后再试...", 'center');*/
 		return Promise.reject(error.response.data); // 返回接口返回的错误信息
 	});
 
