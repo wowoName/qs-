@@ -17,6 +17,8 @@ import MyFan from "@/components/MyFan";
 import SearchFans from "@/components/SearchFans";
 //订单
 import Order from "@/components/Order";
+//提现明细
+import WithDrawalRecord from "@/components/WithDrawalRecord";
 Vue.use(Router)
 
 const router = new Router({
@@ -75,6 +77,14 @@ const router = new Router({
         path: '/order',
         name: 'order',
         component: Order,
+        meta: {
+            keepAlive: true,
+            requireAuth: true
+        }
+    }, {
+        path: '/withDrawalRecord',
+        name: 'withDrawalRecord',
+        component: WithDrawalRecord,
         meta: {
             keepAlive: true,
             requireAuth: true

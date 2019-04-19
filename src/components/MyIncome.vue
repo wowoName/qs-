@@ -45,7 +45,7 @@
 	import IncomeItem from "@/components/incometemplate";
 	import {
 		XHeader
-	} from 'vux'
+	} from 'qsvux'
 	export default {
 		name: 'MyIncome',
 		components: {

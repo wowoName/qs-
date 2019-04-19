@@ -130,7 +130,7 @@
 		Swiper,
 		SwiperItem,
 		Confirm
-	} from 'vux'
+	} from 'qsvux'
 	export default {
 		name: 'MyFan',
 		components: {

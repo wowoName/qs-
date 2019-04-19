@@ -23,13 +23,9 @@
 </template>
 
 <script>
-	import {
-		ViewBox
-	} from 'vux';
 	export default {
 		name: 'OrderTemplate',
 		components: {
-			ViewBox
 		},
 		props: {
 			txtColor: {

@@ -75,7 +75,7 @@
 	import {
 		XHeader,
 		ViewBox
-	} from 'vux'
+	} from 'qsvux'
 	export default {
 		name: 'SearchFans',
 		components: {

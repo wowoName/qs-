@@ -36,7 +36,7 @@
 		TabItem,
 		Swiper,
 		SwiperItem
-	} from 'vux';
+	} from 'qsvux';
 	import OrderTemplate from "@/components/ordertemplateNew";
 	export default {
 		name: 'MyFan',

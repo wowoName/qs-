@@ -31,7 +31,7 @@
   </div>
 </template>
 <script>
-import { XHeader } from "vux";
+import { XHeader } from "qsvux";
 
 export default {
   name: "WithDrawal",
