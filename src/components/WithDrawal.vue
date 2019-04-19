@@ -1,7 +1,8 @@
 <template>
   <div class="wdCon">
     <div class="wdItem">
-      <x-header :left-options="{backText:''}" class="header">余额提现</x-header>
+      <x-header :left-options="{backText:''}" class="header">余额提现
+			<div slot="right" class="bdrecord" @click="$router.push('withDrawalRecord')">提现明细</div></x-header>
       <div class="wdtop clearfix">
         <div class="wdtopItem wdtopItem-border vux-height itemFlex">
           当前余额<span class="balanceItem">{{$route.params.amount||0}}</span>
@@ -128,6 +129,11 @@ export default {
     min-height: 100%;
     padding-bottom: 100px;
     box-sizing: border-box;
+		.bdrecord {
+			font-size: 24px;
+			color: #111111;
+		}
+		
     .wdtop {
       width: 690px;
       padding: 20px 30px;

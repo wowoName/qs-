@@ -1,7 +1,6 @@
 <template>
 	<div class="bDeMain">
 		<x-header :left-options="{backText:''}" class="indexHeader">账单明细
-			<div slot="right" class="bdrecord" @click="$router.push('withDrawalRecord')">提现明细</div>
 		</x-header>
 		<div class="billDeAmount">
 			<datetime format="YYYY-M" @on-change="getBillData" :max-month="new Date().getMonth()" :min-year="new Date().getFullYear()-10"
@@ -106,11 +105,7 @@
 		height: 100%;
 		background-color: #f1f2f7;
 
-		.bdrecord {
-			font-size: 24px;
-			color: #111111;
-		}
-
+		
 		.nodata {
 			position: absolute;
 			top: 50%;
